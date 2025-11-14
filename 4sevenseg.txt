@@ -1,0 +1,59 @@
+#include <reg51.h>
+
+#define SEG P1
+#define DIGIT P3
+
+unsigned char seg_code[10] = {
+    0xC0, 0xF9, 0xA4, 0xB0, 0x99,
+    0x92, 0x82, 0xF8, 0x80, 0x90
+};
+
+void delay(unsigned int ms) {
+    unsigned int i, j;
+    for(i = 0; i < ms; i++)
+        for(j = 0; j < 1275; j++);
+}
+
+void display_number(unsigned int num) {
+    unsigned int d1, d2, d3, d4;
+    unsigned int i;
+
+    d1 = num / 1000;              
+    d2 = (num / 100) % 10;       
+    d3 = (num / 10) % 10;         
+    d4 = num % 10;                
+
+    for(i = 0; i < 50; i++) {     // Refresh display
+
+    
+        DIGIT = 0x08;           
+        SEG = seg_code[d1];
+        delay(1);
+
+     
+        DIGIT = 0x04;            
+        SEG = seg_code[d2];
+        delay(1);
+
+        DIGIT = 0x02;            
+        SEG = seg_code[d3];
+        delay(1);
+
+       
+        DIGIT = 0x01;            
+        SEG = seg_code[d4];
+        delay(1);
+
+        DIGIT = 0x00;           
+    }
+}
+
+void main() {
+    unsigned int num;
+
+    while(1) {
+        for(num = 1000; num <= 9999; num++) {
+            display_number(num);
+        }
+    }
+}
