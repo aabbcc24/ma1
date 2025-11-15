@@ -1,0 +1,25 @@
+#include<msp430.h>
+int main(){
+  WDTCTL=WDTPW|WDTHOLD;
+  P1DIR |= BIT6;
+  P1SEL |= BIT6;
+  TA0CCR0=1000-1;
+  TA0CCTL1=OUTMOD_7;
+  TA0CCR1=0;
+  TA0CTL=TASSEL_2 + MC_1;
+  
+  
+unsigned int duty;
+
+  while(1){
+   for(duty=0;duty<1000;duty++){
+    TA0CCR1=duty;
+    __delay_cycles(100000);
+   }
+    for(duty=1000;duty>0;duty--){
+      TA0CCR1= duty;
+      __delay_cycles(50000);
+    }
+  
+  }
+  }
