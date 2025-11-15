@@ -1,0 +1,24 @@
+#include<msp430.h>
+int main(){
+  WDTCTL =WDTPW |WDTHOLD;
+  P1DIR |= BIT4;//relay
+  P1DIR &= ~BIT3;
+  P1REN |=BIT3;
+  P1OUT |=BIT3;
+  P1OUT &= ~BIT4;
+  while(1){
+    if(!(P1IN &BIT3)){
+      P1OUT |=BIT4;
+      }
+    else{
+      P1OUT &= ~BIT4;
+      }
+    }
+  
+  
+  
+  return 0;
+  
+  
+  }
+  
